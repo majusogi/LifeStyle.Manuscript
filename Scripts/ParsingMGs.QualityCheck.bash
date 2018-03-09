@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## To merge lanes of read 1 and 2: 
 00.HiSeq.data
 
