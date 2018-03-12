@@ -24,5 +24,54 @@ for i in $(cat Quito.list.txt); do
 
 done
 
+4. Change format of the name to MIGA style: 
+
+For read 1:
+for f in *_1.fastq; do mv "$f" "$(awk -F '.' '{print $1".1.fastq" }' <<<"$f")"; done
+
+for read 2:
+for f in *_2.fastq; do mv "$f" "$(awk -F '.' '{print $1".2.fastq" }' <<<"$f")"; done
+
+
+
+4. Nonpareil: 
+
+~/shared3/bin/nonpareil -s 49_4.1.fa -b ./49_4 -d 0.7 -R 40000 -t 32 -T alignment 
+
+
+5. MASH DISTANCES
+
+Fast genome and metagenome distance estimation using MinHash
+module unload gcc/4.6.2
+module load gcc/4.9.0
+module load capnproto-c++/0.5.3
+module load autoconf/2.69
+module load zlib/1.2.8
+module load boost/1.57.0
+module load mash/1.0.2
+
+sketching first
+
+For sequences to be compared with mash, they must first be sketched, which creates vastly reduced representations of them. This will happen automatically if mash dist is given raw sequences. However, if multiple comparisons will be performed, it is more efficient to create sketches with mash sketch first and provide them to mash dist in place of the raw sequences. mash sketch creates a sketch file, which is a reduced representation of a sequence or set of sequences (based on min-hashes) that can be used for fast distance estimations. Input can be fasta or fastq files.
+
+mash sketch -l list.txt -o ~/data3/from-pmicro1/norovirus/metagenomes/12.MASH -k 25 -s 10000
+
+options
+
+
+
+8. MetaPhlAn: Metagenomic Phylogenetic Analysis (MetaPhlAn version 1.7.7 )
+
+module load python/2.7
+module load bowtie2/2.1.0
+
+
+
+
+
+
+
+
+
 
 
