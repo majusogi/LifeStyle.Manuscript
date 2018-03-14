@@ -33,10 +33,14 @@ for read 2:
 for f in *_2.fastq; do mv "$f" "$(awk -F '.' '{print $1".2.fastq" }' <<<"$f")"; done
 
 
+***Count Number of trimmed reads: 
+for i in *.1.fasta; do l=$(grep -c '>' $i); echo $i $l ; done | tr ' ' '\t' > trimmed.Quito.control.txt
+
 
 4. Nonpareil: 
 
-~/shared3/bin/nonpareil -s 49_4.1.fa -b ./49_4 -d 0.7 -R 40000 -t 32 -T alignment 
+for i in *.1.fasta; do ~/shared3/bin/nonpareil -s $i -b $(basename $i .1.fasta) -d 0.7 -t 30 -R 40000 -T alignment; done
+
 
 
 5. MASH DISTANCES
