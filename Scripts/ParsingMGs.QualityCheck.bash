@@ -129,7 +129,46 @@ mash paste ATL-all ATL-1-CoupledReads.msh ATL-2-CoupledReads.msh ATL-3-CoupledRe
 ATL-6-CoupledReads.msh ATL-7-CoupledReads.msh
 
 ###### then you can use mash -t 
-mash dist -t ATL-all.msh ATL-all.msh > test.txt
+mash dist -t ATL-all.msh ATL-all.msh > All.mash.matrix.txt
+
+
+#### We need to modify the input to R by adding metadata:
+create a csv with the mash matrix and metadata: Location 
+
+
+
+#### NMDS in R: 
+
+library(vegan)
+inputFile <- read.csv(file = 'dist.matrix.mash.txt', sep = ",", header = T)
+matrix_data <- inputFile[3:ncol(inputFile)]
+
+
+
+# Collaps into two dimension using the metaMDS function from vegan
+all_NMDS=metaMDS(matrix_data, k=2) # The number of reduced dimensions
+
+#Stress plot. See explaintation at https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
+stressplot(all_NMDS)
+#stress value: 
+all_NMDS$stress
+
+0.1405937
+
+plot(all_NMDS$points)
+
+## To add metada:  extract the x and y coordinates from the MDS plot into a new data frame.
+MDS_xy <- data.frame(all_NMDS$points)
+
+MDS_xy$location <- inputFile$location
+
+#To plot those points, color coded by Habitat, we can use:
+library(ggplot2)
+ggplot(MDS_xy, aes(MDS1, MDS2, color = location)) + geom_point() + theme_bw() 
+
+
+ordiplot(example_NMDS,type="n")
+orditorp(example_NMDS,display="sites",col="red",air=0.01)
 
 
 
@@ -139,7 +178,7 @@ mash dist -t ATL-all.msh ATL-all.msh > test.txt
 module load python/2.7
 module load bowtie2/2.1.0
 
-./metaphlan2.py 4-4M.CoupledReads.fa --input_type fasta  --bowtie2out metagenome.bowtie2.bz2  --nproc 16 > profiled_metagenome.txt
+./metaphlan2.py 4-4M.CoupledReads.fa --input_type fasta --bowtie2out metagenome.bowtie2.bz2  --nproc 16 > profiled_metagenome.txt
 
 ./metaphlan2.py --input_type fasta environmental.CoupledReads.fa --tax_lev f --bowtie2out envri.bowtie2.bz2 --nproc 16 > profiled_envi.MG.txt
 
@@ -152,11 +191,7 @@ to classify at different levels using the envri.bowtie2.bz2 already computed:
 
 
 for Multiple samples: 
-
 for f in */*.bowtie2.bz2; do /nv/hp10/mjsg3/data/tools/metaphlan2/metaphlan2.py $f --input_type bowtie2out --tax_lev g --nproc 16 > ${f%.bowtie2.bz2}_prof.genus.txt; done
-
-
-
 
 
 2. merge metaphaln tables. The resulting table contains relative abundances with microbial clades as rows and samples as columns.
