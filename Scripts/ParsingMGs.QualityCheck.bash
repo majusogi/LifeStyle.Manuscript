@@ -124,6 +124,12 @@ Given k-mer sets A and B, the MinHash algorithm provides an estimation of the Ja
 The Jaccard index is a useful measure of global sequence similarity because it correlates with ANI.
 
 
+##### To join all the pairwise distances use mash paste:
+mash paste ATL-all ATL-1-CoupledReads.msh ATL-2-CoupledReads.msh ATL-3-CoupledReads.msh ATL-4-CoupledReads.msh ATL-5-CoupledReads.msh 
+ATL-6-CoupledReads.msh ATL-7-CoupledReads.msh
+
+###### then you can use mash -t 
+mash dist -t ATL-all.msh ATL-all.msh > test.txt
 
 
 
