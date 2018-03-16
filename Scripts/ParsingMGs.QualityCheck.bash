@@ -42,6 +42,35 @@ for i in *.1.fasta; do l=$(grep -c '>' $i); echo $i $l ; done | tr ' ' '\t' > tr
 for i in *.1.fasta; do ~/shared3/bin/nonpareil -s $i -b $(basename $i .1.fasta) -d 0.7 -t 30 -R 40000 -T alignment; done
 
 
+To make plot with multiple samples: 
+
+Create a Table: R, G, and B represent combination of colors: 
+
+# samples.txt
+File        Name    R       G       B
+# HMP
+SRS063417.1.L50.npo Posterior fornix        256     200     200
+SRS063287.1.L50.npo Buccal mucosa   256     120     120
+SRS062540.1.L50.npo Tongue dorsum   256     3    
+
+
+Run Nonpareil in R:
+source('/nv/hp10/mjsg3/shared3/apps/nonpareil/utils/Nonpareil.R')
+samples <- read.table('samples.txt', sep='\t', h=T);
+attach(samples);
+np <- Nonpareil.curve.batch(File, r=R, g=G, b=B, libnames=Name, modelOnly=TRUE);
+Nonpareil.legend('bottomright');
+detach(samples);
+
+
+
+Figures in R of diversity values: 
+> ggplot(diver, aes(x=diver$location, y=diver$diversity, fill=diver$location)) +  geom_violin() + 
+scale_fill_brewer(palette="Blues") + theme_classic() + stat_summary(fun.data=data_summary) +  xlab("") + ylab("") + 
+theme(text = element_text(size=13))
+
+
+
 
 5. MASH DISTANCES
 
