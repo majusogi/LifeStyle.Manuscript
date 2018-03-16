@@ -72,6 +72,7 @@ theme(text = element_text(size=13))
 
 
 
+
 5. MASH DISTANCES
 
 Fast genome and metagenome distance estimation using MinHash
@@ -167,10 +168,22 @@ library(ggplot2)
 ggplot(MDS_xy, aes(MDS1, MDS2, color = location)) + geom_point() + theme_bw() 
 
 
-ordiplot(example_NMDS,type="n")
-orditorp(example_NMDS,display="sites",col="red",air=0.01)
+anosim_location = anosim(matrix_data, inputFile$Location)
+anosim_location # take a look at results
+summary(anosim_location)
+plot(anosim_location)
+ 
+ This essentially says that our communities are statistically different from each other, 
+ contrary to what our plot seemed to show.  Let’s take a look at PermANOVA, using adonis(), 
+ which is generally considered to be more robust than anosim().
+ 
+PermANOVA:
+adonis_location = adonis(matrix_data ~ location, inputFile)
+adonis_location = adonis(otus_dist ~ location, metadata)
 
+adonis_location # take a look at results; there are no summary() or plot() methods included
 
+ 
 
 
 6. MetaPhlAn: Metagenomic Phylogenetic Analysis (MetaPhlAn version 1.7.7 )
