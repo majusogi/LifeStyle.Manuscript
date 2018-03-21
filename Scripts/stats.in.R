@@ -13,7 +13,10 @@ ylab("Shannon Index") + theme(text = element_text(size=13))
 col = c("darkred","darkblue")
 gb + scale_fill_manual(values = col) 
 
-## Primero test for equality of variances
+## Primero test for equality of variances:
+
+var.test(Shannon ~ location, table, alternative = "two.sided")
+
 t.test(Quito_control$phylo.div, Rios_control$phylo.div, var.equal = T)
 
 
