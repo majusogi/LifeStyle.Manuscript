@@ -39,5 +39,54 @@ scale_fill_brewer(palette="Blues") + theme_classic() + stat_summary(fun.data=dat
 ylab("") + theme(text = element_text(size=13))
 
 
+2. ADoNis: PERMANOVA
+
+#FROM a distance matrix: 
+Necisto dos sets de datos: 
+1: matrix
+2: metadata
+
+#option 1: is to add metadata to the matrix in a single file
+
+location	query	MG59	MG60	MG61
+Rios	MG59	0	0.108981	0.0647395
+Rios	MG60	0.108981	0	0.0912695
+Rios	MG61	0.0647395	0.0912695	0
+Rios	MG62	0.0986788	0.0740981	0.0670813
+
+curtis<-read.table('BrayCurtis.matrix.tsv', sep="\t", header = T, row.names=1)
+
+#option2 upload two separate files
+
+PermANOVA:
+adonis_location = adonis(matrix_data ~ location, inputFile)
+adonis_location = adonis(otus_dist ~ location, metadata)
+
+adonis_location # take a look at results; there are no summary() or plot() methods included
+
+library(vegan)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
