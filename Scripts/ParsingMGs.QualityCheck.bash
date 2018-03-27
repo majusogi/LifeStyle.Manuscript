@@ -92,6 +92,7 @@ it is more efficient to create sketches with mash sketch first and provide them 
 mash sketch creates a sketch file, which is a reduced representation of a sequence or set of sequences (based on min-hashes) that can be used for fast distance estimations. 
 Input can be fasta or fastq files: Coupled.Reads.fna
 
+#.1 Do mash sketch:
 Folder: 03.MASH.dist
 for i in /nv/hp10/mjsg3/shared3/projects/EcoZUR/MGs.lifestyle/Rios.controls/data/04.trimmed_fasta/*.CoupledReads.fa; 
 do mash sketch -k 25 -s 10000 $i -o $(basename $i .CoupledReads.fa); done
@@ -102,36 +103,22 @@ options
 -s Sketch size. Each sketch will have at most this many non-redundant min-hashes (Default: 1000)
 
 
-###Calculating distances:
+##2. Calculating distances:
 
 mash dist <query1> <query2>
 
 To automate this analysis, I used a bash script ‘dist.mash’. 
-
 #!/bin/bash
-
-CTG=$(ls *.msh)
-
-for i in $CTG ; do
-   for j in $CTG ; do
-      [[ "$i" == "$j" ]] && break
-      o="dist/$(basename $i .msh)-$(basename $j .msh)"
-      [[ -s $o.dist ]] || mash dist  $i  $j   > $o.dist
-   done
-done
-
 
 Given k-mer sets A and B, the MinHash algorithm provides an estimation of the Jaccard index:
 The Jaccard index is a useful measure of global sequence similarity because it correlates with ANI.
 
 
 ##### To join all the pairwise distances use mash paste:
-mash paste ATL-all ATL-1-CoupledReads.msh ATL-2-CoupledReads.msh ATL-3-CoupledReads.msh ATL-4-CoupledReads.msh ATL-5-CoupledReads.msh 
-ATL-6-CoupledReads.msh ATL-7-CoupledReads.msh
+mash paste ATL-all *.msh
 
-###### then you can use mash -t 
+###### then you can use mash -t to create the dis. matrix
 mash dist -t ATL-all.msh ATL-all.msh > All.mash.matrix.txt
-
 
 #### We need to modify the input to R by adding metadata:
 create a csv with the mash matrix and metadata: Location 
@@ -139,7 +126,6 @@ create a csv with the mash matrix and metadata: Location
 
 
 #### NMDS in R: 
-
 library(vegan)
 inputFile <- read.csv(file = 'dist.matrix.mash.txt', sep = ",", header = T)
 matrix_data <- inputFile[3:ncol(inputFile)]
@@ -167,15 +153,13 @@ MDS_xy$location <- inputFile$location
 library(ggplot2)
 ggplot(MDS_xy, aes(MDS1, MDS2, color = location)) + geom_point() + theme_bw() 
 
+#To manually change colors:
 
-anosim_location = anosim(matrix_data, inputFile$Location)
-anosim_location # take a look at results
-summary(anosim_location)
-plot(anosim_location)
+scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9"))
+or for specific color per variable
+bp + scale_fill_manual(breaks = c("2", "1", "0.5"), 
+                       values=c("red", "blue", "green"))
  
- This essentially says that our communities are statistically different from each other, 
- contrary to what our plot seemed to show.  Let’s take a look at PermANOVA, using adonis(), 
- which is generally considered to be more robust than anosim().
  
 PermANOVA:
 adonis_location = adonis(matrix_data ~ location, inputFile)
