@@ -56,8 +56,82 @@ module load anaconda2
 *** ConStrains:
 Metagenomic strain-level population genomics
 
-Before run it, we have to run first Metaphlan:
-1. To run Metaphlan:
+Before run it, we have to run first Metaphlan and get the output:  profiled_metagenome.txt
+
+Load Modules:
+module load gcc/4.9.0
+module load mkl/11.2
+module load bowtie2/2.1.0
+module load samtools/1.0
+module load openmpi/1.8
+module load python/2.7
+
+Run Constrains, but paste the metaphlan output in the same location with the fasta files:
+
+python /nv/hp10/mjsg3/data/tools/constrains/ConStrains.py -m /nv/hp10/mjsg3/data/tools/metaphlan2/metaphlan2.py -c test.conf -o test.results -t 10  
+
+--min_cov=FLOAT     Minimum coverage of a species in a sample to be
+                    considered [default: 10, range: 5+].
+  
+test.conf format: 
+//
+sample: sample_1
+fq1: ./fq/sample_1.1.fq
+fq2: ./fq/sample_1.2.fq
+metaphlan: ./fq/sample_1.metaphlan.txt
+//
+sample: sample_2
+fq1: ./fq/sample_2.1.fq
+fq2: ./fq/sample_2.2.fq
+metaphlan: ./fq/sample_2.metaphlan.txt
+
+
+## Output DIR: Results
+
+Intra_sp_rel_ab.profiles     # this is a tabular file with strain relative abundance within species. See header for details.
+Overall_rel_ab.profiles      # this is a tabular file with strain relative abundance in overall samples. See header for details.
+uniGcode                     # this is the directory for all ".uniGcode" files, which are genotypes for strains.
+
+
+# Species   strain_ID   masked_samples  sample_1   sample_2
+Escherichia_coli    str-1   NA  53.252835   37.212245
+Escherichia_coli    str-2   NA  46.747165   62.787755
+Salmonella_typhi    str-1   1   15.492194   41.212442
+Salmonella_typhi    str-2   1   38.313441   21.483291
+
+This means there are two species that passed the minimum coverage requirement for strain inference, and the relative abundance of 
+each strain (E.coli has 2 strains and S.typhi has 3) are listed in sample_1 and sample_2 columns.
+
+
+
+*****In the "uniGcode/" directory, you will find a few "*.uniGcode" files with names indicating the species. 
+The format looks like the example shown below:
+# *: not covered base; -: uncertain base
+#pid    position    ref str-1   str-2
+p0387   1   A   *   *   # <- insufficient mapped reads for inference
+p0387   2   T   *   *
+......
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
