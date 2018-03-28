@@ -53,8 +53,11 @@ module load anaconda2
  --minv 0.1 : Minimum value to display.
  
 
+*** ConStrains:
+Metagenomic strain-level population genomics
 
-
+Before run it, we have to run first Metaphlan:
+1. To run Metaphlan:
 
 
 
