@@ -151,12 +151,11 @@ MDS_xy$location <- inputFile$location
 
 #To plot those points, color coded by Habitat, we can use:
 library(ggplot2)
-ggplot(MDS_xy, aes(MDS1, MDS2, color = location)) + geom_point() + theme_bw() 
+ggplot(MDS_cases, aes(MDS1, MDS2, color = location)) + geom_point() + 
+theme(panel.background = element_rect(fill = "white", colour = "grey50")) + scale_color_manual(values=c("#E69F00", "#56B4E9"))
 
 #To manually change colors:
-
-scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9"))
-or for specific color per variable
+#or for specific color per variable
 bp + scale_fill_manual(breaks = c("2", "1", "0.5"), 
                        values=c("red", "blue", "green"))
  
