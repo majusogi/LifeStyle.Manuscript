@@ -13,8 +13,24 @@ ylab("Shannon Index") + theme(text = element_text(size=13))
 col = c("darkred","darkblue")
 gb + scale_fill_manual(values = col) 
 
-## Primero test for equality of variances:
+# To sort order based on medians: 
+library(forcats)
 
+ggplot(iris, aes(x = fct_reorder(Species, Sepal.Width, fun = median, .desc =TRUE), y = Sepal.Width)) + geom_boxplot()
+
+ggplot(tabla, aes(x=fct_reorder(zone, shannon, fun = median, .desc =TRUE) ,y=shannon))+ 
+geom_boxplot(fill="#4271AE") + theme_classic() + theme(text = element_text(size=9))
+
+
+
+# Generate Geo.point with different variables: 
+> ggplot(tabla, aes(x=remoteness ,y=shannon))+ geom_point(aes(colour = factor(zone))) + theme_classic() + 
+theme(text = element_text(size=9))
+
+
+
+
+## Primero test for equality of variances:
 var.test(Shannon ~ location, table, alternative = "two.sided")
 
 t.test(Quito_control$phylo.div, Rios_control$phylo.div, var.equal = T)
