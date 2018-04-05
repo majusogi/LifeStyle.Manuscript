@@ -120,11 +120,16 @@ p0387   2   T   *   *
 
 
 
+*** Functional Profiling with HUMAnN2:
 
+1.1 Requirements    
+    module load bowtie2/2.3.2 
 
+First I downloaded two databases: UniRef50 and chocophlan
+humann2_databases --download chocophlan full $INSTALL_LOCATION
+humann2_databases --download uniref uniref50_diamond $INSTALL_LOCATION
 
-
-
+humann2 --input examples/demo.fastq --output ensayo --diamon /nv/hp10/mjsg3/data/tools --metaphlan /nv/hp10/mjsg3/data/tools/metaphlan2
 
 
 
