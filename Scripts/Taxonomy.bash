@@ -72,7 +72,12 @@ python /nv/hp10/mjsg3/data/tools/constrains/ConStrains.py -m /nv/hp10/mjsg3/data
 
 --min_cov=FLOAT     Minimum coverage of a species in a sample to be
                     considered [default: 10, range: 5+].
-  
+ 
+## OJO: modify format of the fastq name!!!
+
+for f in *.2.clipped.fastq; do mv "$f" "$(awk -F '.' '{print $1".2.fastq" }' <<<"$f")"; done
+
+
 test.conf format: 
 //
 sample: sample_1
