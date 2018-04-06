@@ -133,6 +133,19 @@ humann2 --input examples/demo.fastq --output ensayo --diamon /nv/hp10/mjsg3/data
 
 
 
+### MaxBin:
+
+Bowtie2 = module load bowtie2/2.1.0 
+FragGeneScan = 
+Hmmer3 =  module load hmmer/3.1b1
+IDBA-UD  =  module load idba/1.1.1 
+
+perl /nv/hp10/mjsg3/data/tools/MaxBin-2.1.1/run_MaxBin.pl -contig all.Contigs.cassava.fna -abund myout.contig.tmp.reads.abund3 -out Maxbin.results -thread 16
+
+-contig all.Contigs.cassava.fna -reads_list reads_list_file.txt -out myout -prob_threshold 0.5 -markerset 100 -thread 16
+
+
+
 
 
 
