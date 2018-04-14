@@ -84,6 +84,7 @@ module load zlib/1.2.8
 module load boost/1.57.0
 module load mash/1.0.2
 
+
 ###sketching first
 Sketch size corresponds to the number of (non-redundant) min-hashes that are kept.
 For sequences to be compared with mash, they must first be sketched, which creates vastly reduced representations of them. 
@@ -194,7 +195,7 @@ for f in *.bowtie2.bz2; do /nv/hp10/mjsg3/data/tools/metaphlan2/metaphlan2.py $f
 
 /nv/hp10/mjsg3/data/tools/metaphlan2/utils/merge_metaphlan_tables.py /09.MetaPhlAn/profiled_samples/*.txt > 09.MetaPhlAn/output/merged_abundance_table.txt
 
-./metaphlan_hclust_heatmap.py --minv 0.1 --top 25 --tax_lev 'o' -s lin --in 09.MetaPhlAn/Analysis_1/merged_table.txt --out Analysis_1/plot
+./metaphlan_hclust_heatmap.py --minv 0.1 --top 25 --tax_lev 'o' -s lin --in 09.MetaPhlAn/Analysis_1/merged_table.txt --out abundance_heatmap.png
 
 default: BrayCurtis
 -s: scale: normal or log 
