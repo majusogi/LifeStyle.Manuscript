@@ -180,22 +180,24 @@ module load bowtie2/2.1.0
 
 
 
-to classify at different levels using the envri.bowtie2.bz2 already computed:
+###to classify at different levels using the envri.bowtie2.bz2 already computed:
+Dos formas: 
 
-./metaphlan2.py --input_type bowtie2out Cas27.bt2out  --tax_lev f > pfile.family.cas27.txt
-
-
+1. Desde el bowtie2out output:
 
 for Multiple samples: 
-for f in */*.bowtie2.bz2; do /nv/hp10/mjsg3/data/tools/metaphlan2/metaphlan2.py $f --input_type bowtie2out --tax_lev g --nproc 16 > ${f%.bowtie2.bz2}_prof.genus.txt; done
+for f in *.bowtie2.bz2; do /nv/hp10/mjsg3/data/tools/metaphlan2/metaphlan2.py $f --input_type bowtie2out --tax_lev g --nproc 16 
+> $(basename $f .bowtie2.bz2)_prof.genus.txt; done
 
 
-2. merge metaphaln tables. The resulting table contains relative abundances with microbial clades as rows and samples as columns.
+2. Merging metaphaln tables. The resulting table contains relative abundances with microbial clades as rows and samples as columns.
 
-utils/merge_metaphlan_tables.py /09.MetaPhlAn/profiled_samples/*.txt > 09.MetaPhlAn/output/merged_abundance_table.txt
+/nv/hp10/mjsg3/data/tools/metaphlan2/utils/merge_metaphlan_tables.py /09.MetaPhlAn/profiled_samples/*.txt > 09.MetaPhlAn/output/merged_abundance_table.txt
 
-/nv/hp10/mjsg3/data/tools/metaphlan2/utils/merge_metaphlan_tables.py casP7/profiled_casP7.txt casP4/profiled_casP4.txt casP5/profiled_casP5.txt casP8/profiled_casP8.txt > merged_abundance_table.txt
+./metaphlan_hclust_heatmap.py --minv 0.1 --top 25 --tax_lev 'o' -s lin --in 09.MetaPhlAn/Analysis_1/merged_table.txt --out Analysis_1/plot
 
+default: BrayCurtis
+-s: scale: normal or log 
 
 
 Visualization with Krona: 
@@ -205,7 +207,10 @@ Visualization with Krona:
  /Users/mjsg3/Software/KronaTools-2.4/scripts/ImportText.pl  LC1.krona.txt -o krona.27.html
 
 
+#####Create a cladogram with GraPhlAn: 
 
+export2graphlan.py --skip_rows 1,2 -i merged_abundance_table.txt --tree merged_abundance.tree.txt --annotation merged_abundance.annot.txt --most_abundant 100 --abundance_threshold 1 
+--least_biomarkers 10 --annotations 5,6 --external_annotations 7 --min_clade_size 1
 
 
 
