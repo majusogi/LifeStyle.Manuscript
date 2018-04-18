@@ -16,16 +16,37 @@ gb + scale_fill_manual(values = col)
 # To sort order based on medians: 
 library(forcats)
 
-ggplot(iris, aes(x = fct_reorder(Species, Sepal.Width, fun = median, .desc =TRUE), y = Sepal.Width)) + geom_boxplot()
-
-ggplot(tabla, aes(x=fct_reorder(zone, shannon, fun = median, .desc =TRUE) ,y=shannon))+ 
+ggplot(tabla, aes(x=fct_reorder(zone, shannon, .fun = median, .desc =TRUE) ,y=shannon))+ 
 geom_boxplot(fill="#4271AE") + theme_classic() + theme(text = element_text(size=9))
-
 
 
 # Generate Geo.point with different variables: 
 > ggplot(tabla, aes(x=remoteness ,y=shannon))+ geom_point(aes(colour = factor(zone))) + theme_classic() + 
 theme(text = element_text(size=9))
+
+
+# To Order according with the Remoteness value: 
+Bdata$factor<-factor(Bdata$zone, levels=c("Colon Eloy", "Maldonado", "Timbire", "Atahualpa", "playa de oro", "Santo Domingo",
+                                           "Selva Alegre", "Zapallo Grande", "San Francisco"))
+
+boxplot(Bdata$shannon ~ Bdata$factor)
+
+## Set up colors/ Colored By Zone
+library(RColorBrewer)
+NumberOfLevels<-length(levels(Bdata$factor))
+mycolors<-brewer.pal(n=NumberOfLevels, name="Set1")
+boxplot(Bdata$shannon ~ Bdata$factor, col=mycolors)
+
+To contorl font size:
+par(cex.lab=1.5) # is for y-axis
+
+par(cex.axis=1.5) # is for x-axis
+
+
+## Statistics: 
+kruskal.test(shannon ~ zone, data = Bdata)
+
+
 
 
 
