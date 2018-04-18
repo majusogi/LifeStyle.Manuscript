@@ -122,16 +122,15 @@ mash paste ATL-all *.msh
 mash dist -t ATL-all.msh ATL-all.msh > All.mash.matrix.txt
 
 #### We need to modify the input to R by adding metadata:
-create a csv with the mash matrix and metadata: Location 
-
+create a csv with the mash matrix and metadata: Location in the second column
 
 
 #### NMDS in R: 
 library(vegan)
 inputFile <- read.csv(file = 'dist.matrix.mash.txt', sep = ",", header = T)
+
+#Por que metadta esta en la column 2: location
 matrix_data <- inputFile[3:ncol(inputFile)]
-
-
 
 # Collaps into two dimension using the metaMDS function from vegan
 all_NMDS=metaMDS(matrix_data, k=2) # The number of reduced dimensions
@@ -160,6 +159,15 @@ theme(panel.background = element_rect(fill = "white", colour = "grey50")) + scal
 bp + scale_fill_manual(breaks = c("2", "1", "0.5"), 
                        values=c("red", "blue", "green"))
  
+
+#To automatically generate colors: 
+library(RColorBrewer)
+
+scale_color_manual(values = getPalette(colourCount))
+RowSideColors=as.character(as.numeric(dat$GO)))
+
+
+
  
 PermANOVA:
 adonis_location = adonis(matrix_data ~ location, inputFile)
