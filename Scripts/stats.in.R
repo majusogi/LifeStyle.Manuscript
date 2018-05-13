@@ -48,13 +48,23 @@ kruskal.test(shannon ~ zone, data = Bdata)
 
 
 
-
-
-
 ## Primero test for equality of variances:
 var.test(Shannon ~ location, table, alternative = "two.sided")
 
+#####If variances are not equal: 
+A modification of the t-test known as Welchs test is said to correct for this problem by 
+estimating the variances, and adjusting the degrees of freedom to use in the tes
+
+
+t.test(Quito_control$phylo.div, Rios_control$phylo.div)
+
+t.test(x, y, alternative = "two.sided", var.equal = FALSE)
+
+
+###If variances are equal: 
+Agregar var.equal = T
 t.test(Quito_control$phylo.div, Rios_control$phylo.div, var.equal = T)
+
 
 
 
