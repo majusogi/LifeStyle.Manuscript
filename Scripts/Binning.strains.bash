@@ -32,3 +32,5 @@ checkm tree -x fna $dir/05.taxonomy $dir/05.taxonomy/checkM -t 16;
 
 checkm tree_qa $dir/05.taxonomy/checkM > $dir/05.taxonomy/checkM.taxonomy.txt;
 
+Adding new scripts
+
