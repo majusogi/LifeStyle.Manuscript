@@ -1,6 +1,5 @@
-Binning using MaxBin: 
 
-
+"""""""""""""""""""""""""""" Binning using MaxBin """"""""""""" 
 Bowtie2 = module load bowtie2/2.1.0 
 FragGeneScan = 
 Hmmer3 =  module load hmmer/3.1b1
@@ -17,8 +16,7 @@ perl /nv/hp10/mjsg3/data/tools/MaxBin-2.2.4/run_MaxBin.pl -contig /nv/hp10/mjsg3
 -reads /nv/hp10/mjsg3/shared3/projects/EcoZUR/MGs.lifestyle/Rios.controls/data/04.trimmed_fasta/MG59.CoupledReads.fa -out MG59 -thread 20
 
 
-CheckM in cluster:
-
+"""""""""""""""""""""""""""" CheckM in cluster """"""""""""" 
 module purge
 module load python/2.7
 module load prodigal/2.6.1                          
@@ -31,4 +29,32 @@ module load hmmer/3.1b1
 checkm tree -x fna $dir/05.taxonomy $dir/05.taxonomy/checkM -t 16;
 
 checkm tree_qa $dir/05.taxonomy/checkM > $dir/05.taxonomy/checkM.taxonomy.txt;
+
+
+
+
+"""""""""""""""""""""""""""" Annotation with Prokka """"""""""""" 
+
+module unload perl/5.14.4 
+module unload python/2.7 
+module load anaconda3/latest
+source activate my-env
+conda install -c conda-forge -c bioconda prokka
+
+prokka --prefix prokka $b.AllContigs.fna
+
+prokka --outdir prokka --prefix $b $b.sAllContigs.fna
+
+
+
+
+
+
+
+
+
+
+
+
+
 
