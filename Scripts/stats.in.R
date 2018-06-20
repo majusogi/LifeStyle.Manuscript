@@ -8,10 +8,15 @@ Quito_control=subset(table, location=="Quito" & status=="control")
 Rios_control=subset(table, location=="Rios" & status=="control")
 
 # Generate BoxPlot
+col = c("darkred","darkblue")
 gb<- ggplot(table, aes(x=loc.stat,y=Shannon, fill=status))+geom_boxplot() + theme_classic() + xlab("") +
 ylab("Shannon Index") + theme(text = element_text(size=13)) 
-col = c("darkred","darkblue")
+
 gb + scale_fill_manual(values = col) 
+
+## To plot only Controls
+col = c("darkorange","forestgreen")
+> ggplot(B, aes(x=location,y=Shannon, fill=location))+geom_boxplot()+ theme_classic() + xlab("") +ylab("Shannon Index") + theme(text = element_text(size=13)) + scale_fill_manual(values = col) 
 
 # To sort order based on medians: 
 library(forcats)
