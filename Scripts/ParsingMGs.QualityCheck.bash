@@ -111,6 +111,15 @@ mash dist <query1> <query2>
 To automate this analysis, I used a bash script ‘dist.mash’. 
 #!/bin/bash
 
+CTG=$(ls *.msh)
+for i in $CTG ; do
+   for j in $CTG ; do
+      [[ "$i" == "$j" ]] && break
+      o="dist/$(basename $i .msh)-$(basename $j .msh)"
+      [[ -s $o.dist ]] || mash dist  $i  $j   > $o.dist
+   done
+done
+
 Given k-mer sets A and B, the MinHash algorithm provides an estimation of the Jaccard index:
 The Jaccard index is a useful measure of global sequence similarity because it correlates with ANI.
 
